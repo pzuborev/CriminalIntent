@@ -3,10 +3,12 @@ package com.pzuborev.criminalintent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -56,6 +58,9 @@ public class CrimeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.criminal_fragment, container, false);
 
+        setHasOptionsMenu(true);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+
         mTitleField = (EditText) v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
@@ -92,5 +97,18 @@ public class CrimeFragment extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                if(NavUtils.getParentActivityName(getActivity()) != null){
+                    NavUtils.navigateUpFromSameTask(getActivity());
+                }
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
+
     }
 }

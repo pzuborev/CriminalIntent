@@ -6,4 +6,9 @@
     <string name="crime_solved">Решено?</string>
     <string name="crimes_title">Преступления</string>
     <string name="crime_list_item_solved">Решено</string>
+    <string name="new_crime">New crime</string>
+    <string name="menu_item_show_subtitle">Show subtitles</string>
+    <string name="subtitles">If you see something say something</string>
+    <string name="menu_item_hide_subtitle">Hide subtitles</string>
+    <string name="list_item_empty_empty_list">List is Empty</string>
 </resources>
