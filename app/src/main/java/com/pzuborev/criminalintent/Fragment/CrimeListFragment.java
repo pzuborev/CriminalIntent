@@ -1,4 +1,4 @@
-package com.pzuborev.criminalintent;
+package com.pzuborev.criminalintent.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,12 +19,17 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.pzuborev.criminalintent.Crime;
+import com.pzuborev.criminalintent.Singleton.CrimeLab;
+import com.pzuborev.criminalintent.Activity.CrimePagerActivity;
+import com.pzuborev.criminalintent.R;
+
 import java.util.ArrayList;
 
 
 public class CrimeListFragment extends ListFragment {
     public static final String TAG = "CrimeListFragment";
-    private static final String SUBTITLE_VISIBLE = "com.pzuborev.criminalintent.CrimeListFragment.SUBTITLE_VISIBLE";
+    private static final String SUBTITLE_VISIBLE = "com.pzuborev.criminalintent.Fragment.CrimeListFragment.SUBTITLE_VISIBLE";
 
     private ArrayList<Crime> mCrimes;
     private boolean mSubtitlesVisible;
@@ -93,7 +98,6 @@ public class CrimeListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
-//        View v = super.onCreateView(inflater, container, savedInstanceState);
 
         if (savedInstanceState != null){
             Log.d(TAG, "exists saved instance");

@@ -1,4 +1,4 @@
-package com.pzuborev.criminalintent;
+package com.pzuborev.criminalintent.Activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+
+import com.pzuborev.criminalintent.Crime;
+import com.pzuborev.criminalintent.Singleton.CrimeLab;
+import com.pzuborev.criminalintent.Fragment.CrimeFragment;
+import com.pzuborev.criminalintent.R;
 
 import java.util.ArrayList;
 import java.util.UUID;

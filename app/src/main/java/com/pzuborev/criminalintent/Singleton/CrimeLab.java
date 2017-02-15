@@ -1,7 +1,9 @@
-package com.pzuborev.criminalintent;
+package com.pzuborev.criminalintent.Singleton;
 
 
 import android.content.Context;
+
+import com.pzuborev.criminalintent.Crime;
 
 import java.util.ArrayList;
 import java.util.UUID;

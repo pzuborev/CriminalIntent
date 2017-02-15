@@ -1,8 +1,10 @@
-package com.pzuborev.criminalintent;
+package com.pzuborev.criminalintent.Fragment;
 
+import android.app.DownloadManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +18,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.pzuborev.criminalintent.Crime;
+import com.pzuborev.criminalintent.Singleton.CrimeLab;
+import com.pzuborev.criminalintent.R;
+
 import java.util.Locale;
 import java.util.UUID;
 
@@ -23,6 +29,8 @@ import java.util.UUID;
 public class CrimeFragment extends Fragment {
     public static final String CRIME_ID = "com.pzuborev.criminalintent.CRIME_ID";
     private static final String TAG = "CrimeFragment";
+    private static final String DIALOG_DATE = "date";
+    private static final int REQUEST_DATE = 0;
 
     //class fields
     private Crime mCrime;
@@ -59,7 +67,8 @@ public class CrimeFragment extends Fragment {
         View v = inflater.inflate(R.layout.criminal_fragment, container, false);
 
         setHasOptionsMenu(true);
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActivity().getActionBar() != null)
+         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTitleField = (EditText) v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
@@ -83,9 +92,18 @@ public class CrimeFragment extends Fragment {
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, Locale.getDefault());
         mCrimeDateField = (Button) v.findViewById(R.id.crime_date);
         mCrimeDateField.setText(df.format(mCrime.getDate()));
+        mCrimeDateField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Set date of crime - click");
+                DatePickerFragment datePicker = DatePickerFragment.newInstance(mCrime.getDate());
+                android.app.FragmentManager fm = getActivity().getFragmentManager();
+                datePicker.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                datePicker.show(fm, DIALOG_DATE);
+            }
+        });
 
 
-        mCrimeDateField.setEnabled(false);
 
         mCrimeSolvedField = (CheckBox) v.findViewById(R.id.crime_solved);
         mCrimeSolvedField.setChecked(mCrime.isSolved());

@@ -1,7 +1,8 @@
 package com.pzuborev.criminalintent;
 
 import android.content.Context;
-import android.os.Build;
+
+import com.pzuborev.criminalintent.Singleton.CrimeLab;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
