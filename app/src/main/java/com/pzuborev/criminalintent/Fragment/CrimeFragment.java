@@ -1,6 +1,6 @@
 package com.pzuborev.criminalintent.Fragment;
 
-import android.app.DownloadManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,11 +19,15 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.pzuborev.criminalintent.Crime;
-import com.pzuborev.criminalintent.Singleton.CrimeLab;
 import com.pzuborev.criminalintent.R;
+import com.pzuborev.criminalintent.Singleton.CrimeLab;
 
+import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
+
+import static android.app.Activity.RESULT_OK;
+import static com.pzuborev.criminalintent.Fragment.DatePickerFragment.EXTRA_DATE;
 
 
 public class CrimeFragment extends Fragment {
@@ -44,7 +48,7 @@ public class CrimeFragment extends Fragment {
         Bundle arg = new Bundle();
         arg.putSerializable(CRIME_ID, crimeId);
         crimeFragment.setArguments(arg);
-        return  crimeFragment;
+        return crimeFragment;
     }
 
     @Override
@@ -68,7 +72,7 @@ public class CrimeFragment extends Fragment {
 
         setHasOptionsMenu(true);
         if (getActivity().getActionBar() != null)
-         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTitleField = (EditText) v.findViewById(R.id.crime_title);
         mTitleField.setText(mCrime.getTitle());
@@ -89,20 +93,19 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, Locale.getDefault());
+
         mCrimeDateField = (Button) v.findViewById(R.id.crime_date);
-        mCrimeDateField.setText(df.format(mCrime.getDate()));
         mCrimeDateField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Set date of crime - click");
                 DatePickerFragment datePicker = DatePickerFragment.newInstance(mCrime.getDate());
-                android.app.FragmentManager fm = getActivity().getFragmentManager();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
                 datePicker.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
                 datePicker.show(fm, DIALOG_DATE);
             }
         });
-
+        updateDateButtonText();
 
 
         mCrimeSolvedField = (CheckBox) v.findViewById(R.id.crime_solved);
@@ -117,16 +120,38 @@ public class CrimeFragment extends Fragment {
         return v;
     }
 
+    private void updateDateButtonText() {
+        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, Locale.getDefault());
+        mCrimeDateField.setText(df.format(mCrime.getDate()));
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
-                if(NavUtils.getParentActivityName(getActivity()) != null){
+                if (NavUtils.getParentActivityName(getActivity()) != null) {
                     NavUtils.navigateUpFromSameTask(getActivity());
                 }
                 return true;
-            default: return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult resultCode = " + resultCode);
+        if (resultCode != RESULT_OK) return;
+        Log.d(TAG, "onActivityResult processing .. requestCode = "+ requestCode);
+        switch (requestCode){
+            case REQUEST_DATE:
+                Log.d(TAG, "onActivityResult processing REQUEST_DATE ");
+                Date crimeDate = (Date) data.getSerializableExtra(EXTRA_DATE);
+                mCrime.setDate(crimeDate);
+                updateDateButtonText();
+                return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
