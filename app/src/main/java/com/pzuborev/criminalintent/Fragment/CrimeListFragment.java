@@ -19,12 +19,14 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.pzuborev.criminalintent.Crime;
-import com.pzuborev.criminalintent.Singleton.CrimeLab;
+import com.pzuborev.criminalintent.Crime.Crime;
+import com.pzuborev.criminalintent.Crime.CrimeLab;
 import com.pzuborev.criminalintent.Activity.CrimePagerActivity;
 import com.pzuborev.criminalintent.R;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class CrimeListFragment extends ListFragment {
@@ -135,8 +137,16 @@ public class CrimeListFragment extends ListFragment {
 
     private class CrimeAdapter extends ArrayAdapter<Crime> {
 
+        private DateFormat mDateFormat = null;
+
         public CrimeAdapter(ArrayList<Crime> crimes) {
             super(getActivity(), 0, crimes);
+        }
+
+        private DateFormat getDateFormat() {
+            if (mDateFormat == null)
+                mDateFormat = DateFormat.getDateInstance(java.text.DateFormat.FULL, Locale.getDefault());
+            return mDateFormat;
         }
 
         @NonNull
@@ -152,7 +162,7 @@ public class CrimeListFragment extends ListFragment {
             CheckBox solvedCheckBox =  (CheckBox) convertView.findViewById(R.id.crime_list_item_solvedCheckBox);
 
             titleTextView.setText(c.getTitle());
-            dateTextView.setText(c.getDateString());
+            dateTextView.setText(getDateFormat().format(c.getDate()));
             solvedCheckBox.setChecked(c.isSolved());
 
             return convertView;
@@ -163,7 +173,7 @@ public class CrimeListFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         ((CrimeAdapter)getListAdapter()).notifyDataSetChanged();
-        Log.d(TAG, "onResume !!!!!!!!!!!!!!");
+        Log.d(TAG, "onResume !");
     }
 
     @Override
@@ -206,6 +216,7 @@ public class CrimeListFragment extends ListFragment {
     }
 
     private void newCrime() {
+        Log.d(TAG, "newCrime");
         Crime crime = new Crime();
         CrimeLab.get(getActivity()).addCrime(crime);
 

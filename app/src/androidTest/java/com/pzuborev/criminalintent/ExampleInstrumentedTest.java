@@ -4,7 +4,8 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.pzuborev.criminalintent.Singleton.CrimeLab;
+import com.pzuborev.criminalintent.Crime.Crime;
+import com.pzuborev.criminalintent.Crime.CrimeLab;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

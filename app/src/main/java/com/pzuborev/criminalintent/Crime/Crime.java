@@ -1,4 +1,7 @@
-package com.pzuborev.criminalintent;
+package com.pzuborev.criminalintent.Crime;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -10,12 +13,31 @@ public class Crime {
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
-    private DateFormat mDateFormat;
+
+    private static final String JSON_ID     = "id";
+    private static final String JSON_TITLE  = "title";
+    private static final String JSON_DATE   = "date";
+    private static final String JSON_SOLVED = "solved";
 
     public Crime() {
         mUUID = UUID.randomUUID();
         mDate = new Date();
-        mDateFormat = DateFormat.getDateInstance(java.text.DateFormat.FULL, Locale.getDefault());
+    }
+
+    public Crime(JSONObject json) throws JSONException {
+        setUUID(UUID.fromString((String) json.getString(JSON_ID)));
+        setTitle(json.getString(JSON_TITLE));
+        setDate(new Date(json.getLong(JSON_DATE)));
+        setSolved(json.getBoolean(JSON_SOLVED));
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(JSON_ID, getUUID().toString());
+        jsonObject.put(JSON_TITLE, getTitle());
+        jsonObject.put(JSON_DATE, getDate().getTime());
+        jsonObject.put(JSON_SOLVED, isSolved());
+        return jsonObject;
     }
 
     public Crime(String title, boolean solved) {
@@ -46,14 +68,6 @@ public class Crime {
 
     public void setDate(Date date) {
         mDate = date;
-    }
-
-    public String getDateString() {
-        if (mDate != null)
-            return mDateFormat.format(mDate);
-        else
-            return "";
-
     }
 
     public boolean isSolved() {
