@@ -6,10 +6,10 @@
         android:id="@+id/menu_item_new_crime"
         android:icon="@drawable/ic_menu_add"
         android:title="@string/new_crime"
-        app:showAsAction="ifRoom|withText"/>
+        android:showAsAction="ifRoom|withText"/>
     <item
         android:id="@+id/menu_item_show_subtitle"
         android:title="@string/menu_item_show_subtitle"
-        app:showAsAction="ifRoom"
+        android:showAsAction="never"
         />
 </menu>
